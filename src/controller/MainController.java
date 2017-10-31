@@ -3,6 +3,8 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.json.JSONObject;
+
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -97,6 +99,13 @@ public void handleCreateButton(){
 	}
 	System.out.println("printing: .. ");
 	System.out.println("x: " + createButtonRadioButton.getLayoutX());
+	String jsonString = new JSONObject()
+            .put("JSON1", "Hello World!")
+            .put("JSON2", "Hello my World!")
+            .put("JSON3", new JSONObject()
+                 .put("key1", "value1")).toString();
+
+	System.out.println(jsonString);
 }
 
 private Node makeDraggable(final Node node) {
