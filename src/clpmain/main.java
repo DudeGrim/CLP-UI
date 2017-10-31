@@ -3,6 +3,7 @@ package clpmain;
 import java.io.IOException;
 
 import controller.MainController;
+import controller.RootController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,15 +17,19 @@ public class main extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-
+    RootController rootController;
+    	MainController mainController;
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("UI Parser Demo");
         primaryStage.getIcons().add(new Image("Lannister.png"));//cause Lannister.
         initRootLayout();
-
+        
         showMain();
+        
+        rootController.setMainController(mainController);
+        rootController.setRootLayout(rootLayout);
 //        showCreator()
     }
 
@@ -36,10 +41,14 @@ public class main extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(main.class.getResource("/view/RootLayout.fxml"));
-            loader.setController(main.class.getResource("/controller/RootController.java"));
+    		
+//    		controller.ini
+//            loader.setController(main.class.getResource("/controller/RootController.java"));
             rootLayout = (BorderPane) loader.load();
             rootLayout.setPadding(new Insets(5));
             // Show the scene containing the root layout.
+            rootController =
+    				loader.<RootController>getController();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
            
@@ -57,12 +66,17 @@ public class main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(main.class.getResource("/view/Main.fxml"));
-            
-            loader.setController(main.class.getResource("/controller/MainController.java"));
+          
+//            loader.setController(main.class.getResource("/controller/MainController.java"));
             AnchorPane main = (AnchorPane) loader.load();
-
+          
+//            rootController.setMainController(mainController);
             // Set person overview into the center of root layout.
-           
+             mainController =
+    				loader.getController();  
+             
+             
+//             System.out.println(mainController.toString());
             rootLayout.setCenter(main);
         } catch (IOException e) {
             e.printStackTrace();

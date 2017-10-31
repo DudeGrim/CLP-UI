@@ -77,6 +77,9 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 	  JSONArrayList = new ArrayList<>();
 	
 }
+public ArrayList<String> getJSONLIST(){
+	return this.JSONArrayList;
+}
 public void handleXButton(){
 	System.out.println("xbutton has been clicked.");
 //	Node n = (Node) st.pop();
