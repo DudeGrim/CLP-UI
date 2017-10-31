@@ -29,7 +29,6 @@ public class main extends Application {
         showMain();
         
         rootController.setMainController(mainController);
-        rootController.setRootLayout(rootLayout);
 //        showCreator()
     }
 
