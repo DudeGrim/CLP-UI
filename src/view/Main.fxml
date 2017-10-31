@@ -27,6 +27,7 @@
                   <Text layoutX="321.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.) Select Element you want to create" />
                   <Text layoutX="321.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.) Enter Text" />
                   <Text layoutX="323.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.) Click Button" />
+                  <Button layoutX="517.0" layoutY="9.0" mnemonicParsing="false" onAction="#handleXButton" text="test" />
                </children>
             </AnchorPane>
         </items>
