@@ -20,9 +20,7 @@ public class TestFunctions {
 	                 .put("Y", translateY)).toString();
 
 		System.out.println(jsonString);
-		
 		return jsonString;
-		
 	}
 
 }

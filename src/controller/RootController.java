@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
 
 public class RootController {
 @FXML Menu exportMenu;
@@ -24,7 +27,7 @@ public void handleExport(){
 	if(!mc.compile()){
 		SoftwareNotification.notifyError("you haven't selected anything yet.");
 	}
-	ArrayList<String> JSONArrayList; 
+	ArrayList<JSONObject> JSONArrayList;
 	JSONArrayList = mc.getJSONLIST();
 	for(int i=0;i<JSONArrayList.size();i++){
 		System.out.println(JSONArrayList.get(i));
@@ -66,19 +69,25 @@ private void showSaveFileChooser() {
 private void saveFileRoutine(File file)
 		throws IOException{
 	// Creates a new file and writes the txtArea contents into it
-
 	String txt = "";
-	ArrayList<String> JSONArrayList; 
+	ArrayList<JSONObject> JSONArrayList;
 	JSONArrayList = mc.getJSONLIST();
-	for(int i=0;i<JSONArrayList.size();i++){
-		System.out.println(JSONArrayList.get(i));
-		txt = txt +JSONArrayList.get(i)+"";
-		
+	JSONArray combined = new JSONArray();
+	JSONObject elements = new JSONObject();
+	for (JSONObject aJSONArrayList : JSONArrayList) {
+		System.out.println(aJSONArrayList);
+		//vessel = JSONObject(JSONArrayList.get(i));
+		combined.put(aJSONArrayList);
+		//txt = txt +JSONArrayList.get(i)+"";
 	}
-	
-	
-	
-	file.createNewFile();
+	elements.put("elements", combined);
+
+
+	txt = combined + "";
+
+
+
+    file.createNewFile();
 	FileWriter writer = new FileWriter(file);
 	writer.write(txt);
 	writer.close();
