@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.event.EventHandler;
@@ -40,7 +41,7 @@ Text statusText;
 @FXML RadioButton createLabelRadioButton;
 @FXML TextField textfield;
 //Stack st;
-ArrayList<String> JSONArrayList;
+ArrayList<JSONObject> JSONObjectList;
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
 	  ToggleGroup group = new ToggleGroup();
@@ -48,11 +49,11 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 	  createTextFieldRadioButton.setToggleGroup(group);
 	  createLabelRadioButton.setToggleGroup(group);
 //	  st = new Stack();
-	  JSONArrayList = new ArrayList<>();
+	JSONObjectList = new ArrayList<>();
 	
 }
-public ArrayList<String> getJSONLIST(){
-	return this.JSONArrayList;
+public ArrayList<JSONObject> getJSONLIST(){
+	return this.JSONObjectList;
 }
 public Boolean compile(){
 	Boolean hasCompiled= false;
@@ -72,16 +73,16 @@ public Boolean compile(){
 		
 		if(comparison.equals("class javafx.scene.control.Button")){
 			Button b= (Button) g.getChildren().get(0);
-			
-			JSONArrayList.add(createJSON(BUTTONSTRING,b.getTranslateX(),b.getTranslateY(),b.getText().toString()));
+
+			JSONObjectList.add(createJSON(BUTTONSTRING,b.getTranslateX(),b.getTranslateY(),b.getText()));
 			hasCompiled=true;
 		}else if(comparison.equals(LABEL)){
 			Label l = (Label) g.getChildren().get(0);
-			JSONArrayList.add(createJSON(LABELSTRING,l.getTranslateX(),l.getTranslateY(),l.getText().toString()));
+			JSONObjectList.add(createJSON(LABELSTRING,l.getTranslateX(),l.getTranslateY(),l.getText().toString()));
 			hasCompiled=true;
 		}else if(comparison.equals(TEXTFIELD)){
 			TextField tf = (TextField) g.getChildren().get(0);
-			JSONArrayList.add(createJSON(TEXTFIELDSTRING,tf.getTranslateX(),tf.getTranslateY(),tf.getText().toString()));
+			JSONObjectList.add(createJSON(TEXTFIELDSTRING,tf.getTranslateX(),tf.getTranslateY(),tf.getText().toString()));
 			hasCompiled=true;
 		}
 	}
@@ -94,17 +95,17 @@ public Boolean compile(){
 //	System.out.println("x: "+b.getTranslateX() +"y: "+b.getTranslateY());
 	return hasCompiled;
 }
-private String createJSON(String type, double translateX, double translateY, String text) {
-	String jsonString = new JSONObject()
+private JSONObject createJSON(String type, double translateX, double translateY, String text) {
+	JSONObject jsonObject = new JSONObject()
             .put("TYPE", type)
             .put("TEXT", text)
             .put("COORDINATES", new JSONObject()
                  .put("X", translateX)
-                 .put("Y", translateY)).toString();
+                 .put("Y", translateY));
 
-	System.out.println("generated JSON: " +jsonString);
+	System.out.println("generated JSON: " +jsonObject.toString());
 	
-	return jsonString;
+	return jsonObject;
 	
 }
 private static MainController instance = null;
