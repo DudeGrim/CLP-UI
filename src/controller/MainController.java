@@ -68,21 +68,21 @@ public Boolean compile(){
 	System.out.println("anchor pane size:" +anchorPane.getChildren().size() );
 	for(int i=0;i<anchorPane.getChildren().size();i++){
 		Node n = anchorPane.getChildren().get(i);
-		Group g = (Group) n;
-		String comparison = "" + g.getChildren().get(0).getClass();
-		
+//		Group g = (Group) n;
+//		String comparison = "" + g.getChildren().get(0).getClass();
+		String comparison = "" + n.getClass();
 		if(comparison.equals("class javafx.scene.control.Button")){
-			Button b= (Button) g.getChildren().get(0);
-
-			JSONObjectList.add(createJSON(BUTTONSTRING,b.getTranslateX(),b.getTranslateY(),b.getText()));
+			Button b= (Button) n;
+			System.out.println("exporting button: "+b.getLayoutX());
+			JSONObjectList.add(createJSON(BUTTONSTRING,b.getLayoutX(),b.getLayoutY(),b.getText(),b.getPrefHeight(),b.getPrefWidth()));
 			hasCompiled=true;
 		}else if(comparison.equals(LABEL)){
-			Label l = (Label) g.getChildren().get(0);
-			JSONObjectList.add(createJSON(LABELSTRING,l.getTranslateX(),l.getTranslateY(),l.getText().toString()));
+			Label l = (Label) n;
+			JSONObjectList.add(createJSON(LABELSTRING,l.getLayoutX(),l.getLayoutY(),l.getText().toString(),l.getPrefHeight(),l.getPrefWidth(),l.getFont().getSize()));
 			hasCompiled=true;
 		}else if(comparison.equals(TEXTFIELD)){
-			TextField tf = (TextField) g.getChildren().get(0);
-			JSONObjectList.add(createJSON(TEXTFIELDSTRING,tf.getTranslateX(),tf.getTranslateY(),tf.getText().toString()));
+			TextField tf = (TextField) n;
+			JSONObjectList.add(createJSON(TEXTFIELDSTRING,tf.getLayoutX(),tf.getLayoutY(),tf.getText().toString(),tf.getPrefHeight(),tf.getPrefWidth()));
 			hasCompiled=true;
 		}
 	}
@@ -95,13 +95,33 @@ public Boolean compile(){
 //	System.out.println("x: "+b.getTranslateX() +"y: "+b.getTranslateY());
 	return hasCompiled;
 }
-private JSONObject createJSON(String type, double translateX, double translateY, String text) {
+private JSONObject createJSON(String type, double translateX, double translateY, String text,double height,double width) {
 	JSONObject jsonObject = new JSONObject()
             .put("TYPE", type)
             .put("TEXT", text)
             .put("COORDINATES", new JSONObject()
                  .put("X", translateX)
-                 .put("Y", translateY));
+                 .put("Y", translateY))
+            .put("SIZE", new JSONObject()
+                    .put("H", height)
+                    .put("W", width));
+
+	System.out.println("generated JSON: " +jsonObject.toString());
+	
+	return jsonObject;
+	
+}
+private JSONObject createJSON(String type, double translateX, double translateY, String text,double height,double width,double fontSize) {
+	JSONObject jsonObject = new JSONObject()
+            .put("TYPE", type)
+            .put("TEXT", text)
+            .put("COORDINATES", new JSONObject()
+                 .put("X", translateX)
+                 .put("Y", translateY))
+            .put("SIZE", new JSONObject()
+                    .put("H", height)
+                    .put("W", width)
+            		.put("F", fontSize));
 
 	System.out.println("generated JSON: " +jsonObject.toString());
 	
@@ -126,18 +146,39 @@ public void displayPosition(MouseEvent event){
 	statusText.setText("X = " +event.getX()+" Y= " +event.getY());
 	
 }
+//public void handleCreateButton(){
+//	if (createButtonRadioButton.isSelected()){
+//		Button b1 = new Button(textfield.getText().toString());
+//		anchorPane.getChildren().add(makeDraggable(b1));
+//		System.out.println("button initialized: "+b1.getText().toString());
+////		st.push(b1);
+//	}else if(createLabelRadioButton.isSelected()){
+//		Label l1 = new Label(textfield.getText().toString());
+//		anchorPane.getChildren().add(makeDraggable(l1));
+////		st.push(l1);
+//	}else if(createTextFieldRadioButton.isSelected()){
+//		anchorPane.getChildren().add(makeDraggable(new TextField(textfield.getText().toString())));
+//	}else{
+//		SoftwareNotification.notifyError("Select an element");
+//	}
+//	System.out.println("printing: .. ");
+//	System.out.println("x: " + createButtonRadioButton.getLayoutX());
+//
+//}
 public void handleCreateButton(){
 	if (createButtonRadioButton.isSelected()){
 		Button b1 = new Button(textfield.getText().toString());
-		anchorPane.getChildren().add(makeDraggable(b1));
+//		DragResizeMod.makeResizable(b1);
+		anchorPane.getChildren().add(DragResizeMod.makeResizable(b1));
 		System.out.println("button initialized: "+b1.getText().toString());
 //		st.push(b1);
 	}else if(createLabelRadioButton.isSelected()){
 		Label l1 = new Label(textfield.getText().toString());
-		anchorPane.getChildren().add(makeDraggable(l1));
+		anchorPane.getChildren().add(DragResizeMod.makeResizable(l1));
 //		st.push(l1);
 	}else if(createTextFieldRadioButton.isSelected()){
-		anchorPane.getChildren().add(makeDraggable(new TextField(textfield.getText().toString())));
+		TextField f1 = new TextField(textfield.getText().toString());
+		anchorPane.getChildren().add(DragResizeMod.makeResizable(f1));
 	}else{
 		SoftwareNotification.notifyError("Select an element");
 	}
